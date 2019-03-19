@@ -1,6 +1,6 @@
 {
-	"name": "rtcamp/nginx-helper",
-	"description": "Cleans nginx's fastcgi/proxy cache or redis-cache whenever a post is edited/published. Also does a few more things.",
+	"name": "greenpeace/planet4-nginx-helper",
+	"description": "Cloned from rtcamp/nginx-helper. Cleans nginx's fastcgi/proxy cache or redis-cache whenever a post is edited/published. Also does a few more things.",
 	"keywords": ["wordpress", "plugin", "nginx", "nginx-helper", "fastcgi", "redis-cache", "redis", "cache"],
 	"homepage": "https://rtcamp.com/nginx-helper/",
 	"license": "GPL-2.0+",
