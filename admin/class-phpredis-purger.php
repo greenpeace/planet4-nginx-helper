@@ -72,7 +72,7 @@ class PhpRedis_Purger extends Purger {
 
 			$parse             = wp_parse_url( get_home_url() );
 			$parse['path']     = empty( $parse['path'] ) ? '/' : $parse['path'];
-			$total_keys_purged = $this->delete_keys_by_wildcard( $prefix . $parse['scheme'] . 'GET' . $parse['host'] . $parse['path'] . '*' );
+			$total_keys_purged = $this->delete_keys_by_wildcard( $prefix . $parse['scheme'] . 'GET' . $_SERVER['HTTP_X_FORWARDED_HOST'] . $parse['path'] . '*' );
 			$this->log( '* ' . get_home_url() . ' Purged! * ' );
 
 		}
@@ -104,7 +104,7 @@ class PhpRedis_Purger extends Purger {
 		}
 
 		$prefix          = $nginx_helper_admin->options['redis_prefix'];
-		$_url_purge_base = $prefix . $parse['scheme'] . 'GET' . $parse['host'] . $parse['path'];
+		$_url_purge_base = $prefix . $parse['scheme'] . 'GET' . $_SERVER['HTTP_X_FORWARDED_HOST'] . $parse['path'];
 		$is_purged       = $this->delete_single_key( $_url_purge_base );
 
 		if ( $is_purged ) {
@@ -126,7 +126,7 @@ class PhpRedis_Purger extends Purger {
 
 		$parse           = wp_parse_url( site_url() );
 		$prefix          = $nginx_helper_admin->options['redis_prefix'];
-		$_url_purge_base = $prefix . $parse['scheme'] . 'GET' . $parse['host'];
+		$_url_purge_base = $prefix . $parse['scheme'] . 'GET' . $_SERVER['HTTP_X_FORWARDED_HOST'];
 
 		$purge_urls = isset( $nginx_helper_admin->options['purge_url'] ) && ! empty( $nginx_helper_admin->options['purge_url'] ) ?
 			explode( "\r\n", $nginx_helper_admin->options['purge_url'] ) : array();
