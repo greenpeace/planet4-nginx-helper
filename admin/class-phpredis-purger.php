@@ -93,7 +93,8 @@ class PhpRedis_Purger extends Purger {
 
 			$parse             = wp_parse_url( get_home_url() );
 			$parse['path']     = empty( $parse['path'] ) ? '/' : $parse['path'];
-			$total_keys_purged = $this->delete_keys_by_wildcard( $prefix . $parse['scheme'] . 'GET' . $parse['host'] . $parse['path'] . '*' );
+			$host              = isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $parse['host'];
+			$total_keys_purged = $this->delete_keys_by_wildcard( $prefix . $parse['scheme'] . 'GET' . $host . $parse['path'] . '*' );
 			$this->log( '* ' . get_home_url() . ' Purged! * ' );
 
 		}
@@ -140,7 +141,8 @@ class PhpRedis_Purger extends Purger {
 		}
 
 		$prefix          = $nginx_helper_admin->options['redis_prefix'];
-		$_url_purge_base = $prefix . $parse['scheme'] . 'GET' . $parse['host'] . $parse['path'];
+		$host            = isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $parse['host'];
+		$_url_purge_base = $prefix . $parse['scheme'] . 'GET' . $host . $parse['path'];
 
 		/**
 		 * To delete device type caches such as `<URL>--mobile`, `<URL>--desktop`, `<URL>--lowend`, etc.
@@ -192,7 +194,8 @@ class PhpRedis_Purger extends Purger {
 
 		$parse           = wp_parse_url( home_url() );
 		$prefix          = $nginx_helper_admin->options['redis_prefix'];
-		$_url_purge_base = $prefix . $parse['scheme'] . 'GET' . $parse['host'];
+		$host            = isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $parse['host'];
+		$_url_purge_base = $prefix . $parse['scheme'] . 'GET' . $host;
 
 		$purge_urls = isset( $nginx_helper_admin->options['purge_url'] ) && ! empty( $nginx_helper_admin->options['purge_url'] ) ?
 			explode( "\r\n", $nginx_helper_admin->options['purge_url'] ) : array();
